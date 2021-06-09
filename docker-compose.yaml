@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  neo4j-server:
+    image: neo4j
+    environment:
+      NEO4J_AUTH: none
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - $HOME/neo4j/data:/data
+  spring-boot-app:
+    image: openjdk:8-jdk-alpine
+    command: java -jar accessing-data-neo4j-0.0.1-SNAPSHOT.jar
+    ports:
+      - 8080:8080
+    working_dir: /gs-accessing-data-neo4j
+    volumes:
+      - ./gs-accessing-data-neo4j/complete/target:/gs-accessing-data-neo4j
+    depends_on:
+      - neo4j-server
